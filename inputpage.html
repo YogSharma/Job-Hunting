@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Dynamic Content</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        input[type="text"], input[type="email"], input[type="datetime-local"], select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #1155CC;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #084F8A;
+        }
+        .confirmation {
+            margin-top: 20px;
+            font-size: 16px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h2>Enter Dynamic Content</h2>
+    <form id="emailForm">
+        <!-- Form for input values -->
+        <label for="senderName">Sender Name:</label>
+        <input type="text" id="senderName" placeholder="Enter sender's name" required>
+
+        <label for="senderEmail">Sender Email:</label>
+        <input type="email" id="senderEmail" placeholder="Enter sender's email" required>
+
+        <label for="dateTime">Date and Time:</label>
+        <input type="datetime-local" id="dateTime" required>
+
+        <label for="recipientEmail">Recipient Email:</label>
+        <input type="email" id="recipientEmail" placeholder="Enter recipient's email" required>
+
+        <label for="applicantName">Applicant Name:</label>
+        <input type="text" id="applicantName" placeholder="Enter applicant's name" required>
+
+        <label for="companyName">Company Name:</label>
+        <input type="text" id="companyName" placeholder="Enter company name" required>
+
+        <label for="recruiterName">Recruiter's Name:</label>
+        <input type="text" id="recruiterName" placeholder="Enter recruiter's name" required>
+
+        <label for="recruiterEmail">Recruiter's Email:</label>
+        <input type="email" id="recruiterEmail" placeholder="Enter recruiter's email" required>
+
+        <label for="jobPost">Job Post:</label>
+        <select id="jobPost">
+            <option value="Junior Level Full Stack Developer">Junior Level Full Stack Developer</option>
+            <option value="Entry Level Software Engineer">Entry Level Software Engineer</option>
+            <option value="Mid Level Full Stack Developer">Mid Level Full Stack Developer</option>
+            <option value="Senior Software Engineer">Senior Software Engineer</option>
+            <option value="Junior Data Analyst">Junior Data Analyst</option>
+            <option value="Mid Level Data Analyst">Mid Level Data Analyst</option>
+            <option value="Senior Data Scientist">Senior Data Scientist</option>
+        </select>
+        <label for="emailHeading">Select Email Heading:</label>
+        <select id="emailHeading">
+            <option value="Notification of Document Screening Results">Notification of Document Screening Results</option>
+            <option value="Application Outcome Notification">Application Outcome Notification</option>
+            <option value="Regarding Your Job Application">Regarding Your Job Application</option>
+            <option value="Update on Your Application Status">Update on Your Application Status</option>
+            <option value="Decision on Your Application">Decision on Your Application</option>
+            <option value="Results of Your Application Review">Results of Your Application Review</option>
+            <option value="Your Application Status Update">Your Application Status Update</option>
+            <option value="Screening Results for Your Application">Screening Results for Your Application</option>
+            <option value="Feedback on Your Recent Application">Feedback on Your Recent Application</option>
+            <option value="Outcome of Document Review">Outcome of Document Review</option>
+            <option value="Recruitment Update: Your Application">Recruitment Update: Your Application</option>
+            <option value="Final Decision on Your Job Application">Final Decision on Your Job Application</option>
+            <option value="Important Update on Your Application">Important Update on Your Application</option>
+            <option value="Response to Your Application Submission">Response to Your Application Submission</option>
+            <option value="Notification of Recruitment Results">Notification of Recruitment Results</option>
+            <option value="Update on Your Candidacy">Update on Your Candidacy</option>
+            <option value="Recruitment Process Outcome">Recruitment Process Outcome</option>
+            <option value="Decision Regarding Your Application">Decision Regarding Your Application</option>
+            <option value="Outcome of Screening Process">Outcome of Screening Process</option>
+            <option value="Your Application Review Results">Your Application Review Results</option>
+            <option value="Application Review Feedback">Application Review Feedback</option>
+        </select>
+
+        <button type="submit">Generate Email</button>
+    </form>
+
+    <div class="confirmation" id="confirmationMessage" style="display: none;">
+        <p>Your form has been submitted successfully. You will be redirected to the email template.</p>
+    </div>
+
+    <script>
+        document.getElementById('emailForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Validate form fields
+            const senderEmail = document.getElementById('senderEmail').value;
+            const recipientEmail = document.getElementById('recipientEmail').value;
+            const dateTime = document.getElementById('dateTime').value;
+
+            // Simple email format validation
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(senderEmail) || !emailPattern.test(recipientEmail)) {
+                alert("Please enter valid email addresses.");
+                return;
+            }
+
+            // Ensure date is selected
+            if (!dateTime) {
+                alert("Please select a date and time.");
+                return;
+            }
+
+            // Get values from form
+            const senderName = document.getElementById('senderName').value;
+            const applicantName = document.getElementById('applicantName').value;
+            const companyName = document.getElementById('companyName').value;
+            const recruiterName = document.getElementById('recruiterName').value;
+            const recruiterEmail = document.getElementById('recruiterEmail').value;
+            const jobPost = document.getElementById('jobPost').value;
+            const emailHeading = document.getElementById('emailHeading').value;
+
+            // Convert ISO date to desired format (e.g., 27 September 2024 at 11:43)
+            const formattedDate = new Date(dateTime);
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+            const formattedDateTime = formattedDate.toLocaleDateString('en-GB', options).replace(',', ' at');
+
+            // Store values in localStorage
+            localStorage.setItem('senderName', senderName);
+            localStorage.setItem('senderEmail', senderEmail);
+            localStorage.setItem('dateTime', formattedDateTime);
+            localStorage.setItem('recipientEmail', recipientEmail);
+            localStorage.setItem('applicantName', applicantName);
+            localStorage.setItem('companyName', companyName);
+            localStorage.setItem('recruiterName', recruiterName);
+            localStorage.setItem('recruiterEmail', recruiterEmail);
+            localStorage.setItem('jobPost', jobPost);
+            localStorage.setItem('emailHeading', emailHeading);
+
+            // Display confirmation message
+            document.getElementById('confirmationMessage').style.display = 'block';
+
+            // Redirect to email template page after a short delay (3 seconds)
+            setTimeout(function() {
+                window.location.href = 'email-template.html';  // Make sure the email template is named correctly
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

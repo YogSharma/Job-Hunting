@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "https://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Gmail - Notification of Document Screening Results</title>
+    <style type="text/css">
+        body, td, div, p, a, input {
+            font-family: Arial, sans-serif;
+        }
+        body, td {
+            font-size: 13px;
+        }
+        a:link, a:active {
+            color: #1155CC;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        a:visited {
+            color: #6611CC;
+        }
+        img {
+            border: 0px;
+        }
+        .logo {
+            left: -7px;
+            position: relative;
+        }
+        .bodycontainer {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        hr {
+            border: none;
+            border-top: 1.5px solid #aaa; /* Use light gray or adjust to match */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+            margin: 10px 0; /* Adjust spacing above and below the line */
+        }
+        .maincontent {
+            background: #fff;
+        }
+        .message {
+            margin-top: 10px;
+        }
+        .recipient, .replyto {
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bodycontainer">
+        <!-- Header with Gmail Logo -->
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr height="14px">
+                <td width="143">
+                    <img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_server_1x.png" width="143" height="59" alt="Gmail" class="logo">
+                </td>
+                <td align="right">
+                    <font size="-1">
+                        <b><span id="name1"></span> &lt;<span id="name2"></span>>&gt;</b>
+                    </font>
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <!-- Main Content -->
+        <div class="maincontent">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td>
+                        <font size="+1"><b><span id="emailHeading"></span></b></font><br>
+                    </td>
+                </tr>
+            </table>
+            <hr>
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="message">
+                <tr>
+                    <td>
+                        <font size="-1">
+                            <b><span id="recruiterName"></span></b> &lt;<span id="senderEmail"></span>&gt;
+                        </font>
+                    </td>
+                    <td align="right">
+                        <font size="-1" id="emailDateTime"></font>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding-bottom: 4px;">
+                        <font size="-1" class="recipient">
+                            <div class="replyto">To: <span id="emailRecipient"></span></div>
+                        </font>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table width="100%" cellpadding="12" cellspacing="0" border="0">
+                            <tr>
+                                <td>
+                                    <div style="overflow: hidden;">
+                                        <font size="-1">
+                                            Dear <span id="applicantName"></span>,<br><br>
+                                            Thank you for applying for the position of <span id="jobPost"></span> at <span id="companyName"></span>.<br><br>
+                                            
+                                            We regret to inform you that after careful consideration, we are not proceeding with your application for this position. We had an overwhelming response from candidates and, unfortunately, we cannot offer you a role at this time.<br><br>
+                                            
+                                            We truly appreciate the time and effort you invested in applying for the position. We wish you all the best in your job search and future endeavors.<br><br>
+                                            
+                                            Best regards,<br>
+                                            <span id="recruiterName2"></span><br>
+                                            Recruitment department at <span id="companyName2"></span><br>
+                                        </font>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // Retrieve data from localStorage and set dynamically
+            document.getElementById('senderEmail').textContent = localStorage.getItem('senderEmail');
+            document.getElementById('emailDateTime').textContent = localStorage.getItem('dateTime');
+            document.getElementById('emailRecipient').textContent = localStorage.getItem('recipientEmail');
+            document.getElementById('applicantName').textContent = localStorage.getItem('applicantName');
+            document.getElementById('name1').textContent = localStorage.getItem('applicantName');
+            document.getElementById('name2').textContent = localStorage.getItem('recipientEmail');
+            document.getElementById('companyName').textContent = localStorage.getItem('companyName');
+            document.getElementById('companyName2').textContent = localStorage.getItem('companyName');
+            document.getElementById('recruiterName').textContent = localStorage.getItem('recruiterName');
+            document.getElementById('recruiterName2').textContent = localStorage.getItem('recruiterName');
+            document.getElementById('jobPost').textContent = localStorage.getItem('jobPost');
+            document.getElementById('emailHeading').textContent = localStorage.getItem('emailHeading');
+
+            // Get the job level to display custom message
+            const jobLevel = localStorage.getItem('jobLevel');
+            const jobLevelMessage = document.getElementById('jobLevelMessage');
+            
+            if (jobLevel === 'Junior') {
+                jobLevelMessage.textContent = "We understand that this is your first role, and we're excited about the potential you bring. Although we won’t be progressing with your application for this role, we encourage you to keep growing!";
+            } else if (jobLevel === 'Entry Level') {
+                jobLevelMessage.textContent = "Thank you for your enthusiasm and dedication. We are sure you'll have a bright future ahead in the industry!";
+            } else if (jobLevel === 'Mid Level') {
+                jobLevelMessage.textContent = "Your experience and skills are impressive. Unfortunately, we've chosen another candidate for this particular position. We hope you'll apply for future opportunities at " + localStorage.getItem('companyName') + ".";
+            } else if (jobLevel === 'Senior') {
+                jobLevelMessage.textContent = "We appreciate your expertise and experience. After careful consideration, we regret to inform you that we have selected a different candidate for this role, but we encourage you to apply for senior roles in the future!";
+            }
+        }
+    </script>
+</body>
+</html>
